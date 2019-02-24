@@ -7,12 +7,12 @@ const generalConfig = {
 
 const dev = {
   serverUrl: 'http://127.0.0.1',
-  port: '5000'
+  port: '8080'
 };
 
 const production = {
-  serverUrl: 'http://192.168.99.100',
-  port: '80'
+  serverUrl: 'http://127.0.0.1',
+  port: '5000'
 };
 
 

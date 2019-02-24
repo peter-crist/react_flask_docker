@@ -21,7 +21,8 @@ module.exports = {
     ]
   },
   resolve: {
-    root: path.join(__dirname, 'src')
+    root: path.join(__dirname, 'src'),
+    extensions: ['', '.js', '.jsx']
   },
   plugins: [
     new webpack.EnvironmentPlugin([
