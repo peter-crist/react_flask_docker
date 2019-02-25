@@ -5,6 +5,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     restart: always
+    volumes:
+      - /tmp:/uploads
     ports:
      - "5000:5000"
     env_file:
