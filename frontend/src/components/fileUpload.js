@@ -22,7 +22,6 @@ export default class FileUpload extends Component {
     upload.append('file', this.uploadInput.files[0]);
     upload.append('filename', this.state.fileName);
 
-    console.log("Starting fetch...");
     fetch('http://localhost:5000/api/upload', {
         method: 'POST',
         body: upload
