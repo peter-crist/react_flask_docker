@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import MsgRow from './msgRow';
 import LoadingImage from './loadingImage';
 
+//TODO: Implement pagination with Flask-SocketIO to handle extremely large files?
 export default class ParsedGrid extends Component {
     constructor(props) {
         super(props);
@@ -14,14 +15,16 @@ export default class ParsedGrid extends Component {
                 <div><LoadingImage /></div>
             )
         }
-        
-        // Otherwise, render the results from the parsed file.
+    
         var gridData = this.props.results;
+        // If there is no data, don't show anything; we haven't tried to parse anything yet.
         if (!gridData) {
             return (
                 <div></div>
             )
         } 
+
+        // Display the parsed response data from the file that was uploaded!
         if (gridData) {
             var msgGrid = gridData.map((msgData, index) => {
                 return (

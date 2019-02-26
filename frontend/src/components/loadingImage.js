@@ -6,6 +6,7 @@ const imgStyle = {
     'width': '50%'
 };
 
+//TODO: Potentially improve user experience to show loading for at least 1-2 seconds so it doesn't appear to "flash" at them
 export default class LoadingImage extends Component {
     render(){
       return (

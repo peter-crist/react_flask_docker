@@ -15,7 +15,6 @@ export default class Body extends Component {
     }
 
     setResponseState(isLoading, data) {
-        console.log("Setting Response State - isLoading=" + isLoading);
         this.setState({
             isLoading: isLoading,
             responseResults: data
