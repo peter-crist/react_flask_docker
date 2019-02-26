@@ -14,17 +14,19 @@ export default class FileUpload extends Component {
   handleUpload(e) {
     e.preventDefault();
 
-    const data = new FormData();
-    data.append('file', this.uploadInput.files[0]);
-    data.append('filename', this.state.fileName);
-    console.log(data);
+    const upload = new FormData();
+    upload.append('file', this.uploadInput.files[0]);
+    upload.append('filename', this.state.fileName);
+
 
     fetch('http://localhost:5000/api/upload', {
         method: 'POST',
-        body: data
+        body: upload
         })
-        .then((response) => {
-            console.log(response);
+        .then(response => response.json())
+        .then((data) => {
+            this.setState({ parseResults: data })
+            this.props.setResponseState(data);
     });
   }
 
@@ -36,7 +38,7 @@ export default class FileUpload extends Component {
     return (
     <div>
         <form onSubmit={this.handleUpload}>
-            <div className="col-lg-6 col-sm-6 col-12">
+            <div className="col-12">
                 <h4>Parse Email Data File</h4>
                 <div className="input-group">
                     <label className="input-group-btn">
@@ -52,7 +54,7 @@ export default class FileUpload extends Component {
                     </label>
                 </div>
             </div>
-        </form> 
+        </form>
     </div>
     );
   }

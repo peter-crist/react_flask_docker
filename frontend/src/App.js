@@ -1,25 +1,13 @@
 import React, { Component } from 'react';
-import Jumbotron from "./components/jumbotron";
-import FileUpload from './components/fileUpload';
+import Body from './components/body';
+import Jumbotron from './components/jumbotron';
 
 export default class App extends Component {
-  constructor () {
-    super();
-  }
-
-  state = {
-    
-  };
-
-  componentDidMount() {
-    
-  }
-
   render() {
     return (
       <div>
         <Jumbotron />
-        <FileUpload />
+        <Body />
       </div>
     );
   }

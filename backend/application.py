@@ -55,9 +55,9 @@ def fileUpload():
                         }
                         
                         resp.append(message_dictionary)
-                        resp = json.dumps(resp)
-                        resp = json.loads(resp)
 
+                resp = json.dumps(resp)
+                resp = json.loads(resp)
                 return jsonify(resp)
 
     except Exception, e:
