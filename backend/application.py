@@ -1,10 +1,8 @@
 # Start with a basic flask app webpage.
 from flask import Flask, render_template, url_for, copy_current_request_context, request, jsonify
-from werkzeug.utils import secure_filename
 from flask_cors import CORS, cross_origin
-import os
-import tarfile
-from email.parser import Parser
+import parser_factory
+
 import json
 
 UPLOAD_FOLDER = '/uploads'
@@ -24,9 +22,10 @@ def allowed_file(filename):
 def fileUpload():
     try:
         if request.method == 'POST':  
-            importFile = request.files['file']           
-            if importFile.content_type == "application/x-gzip":
-                resp = parseTar(importFile)
+            importFile = request.files['file']         
+            if importFile.content_type == "application/x-gzip" or importFile.content_type == "application/octet-stream":
+                parser = parser_factory.FileParser.factory(importFile.content_type)
+                resp = parser.parse(importFile, UPLOAD_FOLDER)
                 resp = json.dumps(resp)
                 resp = json.loads(resp)
                 return jsonify(resp)
@@ -34,34 +33,6 @@ def fileUpload():
     except Exception, e:
         return str(e)
 
-def parseTar(file): 
-    filename = secure_filename(file.filename)
-    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-    tar = tarfile.open(os.path.join(app.config['UPLOAD_FOLDER'], filename), "r:gz")
-    resp = []
-    for member in tar.getmembers():
-        f = tar.extractfile(member)
-        if f is not None:
-            content = f.read()
-            
-            message = Parser().parsestr(content)
-            messageId = message['message-id']
-            to = message['to']
-            sender = message['from']
-            subject = message['subject']
-            date = message['date']
-
-            message_dictionary = {
-                "msg-id": messageId,
-                "to": to,
-                "sender": sender,
-                "subject": subject,
-                "date": date
-            }
-            
-            resp.append(message_dictionary)
-    return resp
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')
