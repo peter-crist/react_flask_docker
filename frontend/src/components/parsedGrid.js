@@ -1,28 +1,31 @@
 import React, { Component } from 'react';
-import LoadingImage from './loadingImage'
 import MsgRow from './msgRow';
+import LoadingImage from './loadingImage';
 
 export default class ParsedGrid extends Component {
     constructor(props) {
         super(props);
     }
 
-    render(){
-        var gridData = this.props.results;
-        console.log(gridData);
-        if (!gridData) {
+    render() {
+        // Return a loading message if the fetch results from the parse haven't arrived yet.
+        if (this.props.isLoading) {
             return (
-                <div>
-                    <LoadingImage />
-                </div>
+                <div><LoadingImage /></div>
             )
         }
-        else {
-            var row_id = 0
-            var msgGrid = gridData.map((msgData) => {
-                row_id += 1;
+        
+        // Otherwise, render the results from the parsed file.
+        var gridData = this.props.results;
+        if (!gridData) {
+            return (
+                <div></div>
+            )
+        } 
+        if (gridData) {
+            var msgGrid = gridData.map((msgData, index) => {
                 return (
-                    <MsgRow msgData={msgData}/>
+                    <MsgRow key={index} msgData={msgData}/>
                 )
             });
             return (
@@ -36,7 +39,7 @@ export default class ParsedGrid extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {msgGrid}
+                        {msgGrid}
                     </tbody>
                 </table>              
             )

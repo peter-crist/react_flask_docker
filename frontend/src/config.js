@@ -15,7 +15,6 @@ const production = {
   port: '5000'
 };
 
-
 const env = process.env.NODE_ENV;
 const envConfig = eval(`${env}`);
 

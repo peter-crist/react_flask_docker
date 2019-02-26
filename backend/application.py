@@ -8,7 +8,7 @@ from email.parser import Parser
 import json
 
 UPLOAD_FOLDER = '/uploads'
-ALLOWED_EXTENSIONS = set(['gz'])
+ALLOWED_EXTENSIONS = set(['gz', 'msg'])
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -24,44 +24,44 @@ def allowed_file(filename):
 def fileUpload():
     try:
         if request.method == 'POST':  
-            importFile = request.files['file']
-            if importFile:
-                filename = secure_filename(importFile.filename)
-                importFile.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                
-                if os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
-                    print "File exists"
-
-                tar = tarfile.open(os.path.join(app.config['UPLOAD_FOLDER'], filename), "r:gz")
-                resp = []
-                for member in tar.getmembers():
-                    f = tar.extractfile(member)
-                    if f is not None:
-                        content = f.read()
-                        
-                        message = Parser().parsestr(content)
-                        messageId = message['message-id']
-                        to = message['to']
-                        sender = message['from']
-                        subject = message['subject']
-                        date = message['date']
-
-                        message_dictionary = {
-                            "msg-id": messageId,
-                            "to": to,
-                            "sender": sender,
-                            "subject": subject,
-                            "date": date
-                        }
-                        
-                        resp.append(message_dictionary)
-
+            importFile = request.files['file']           
+            if importFile.content_type == "application/x-gzip":
+                resp = parseTar(importFile)
                 resp = json.dumps(resp)
                 resp = json.loads(resp)
                 return jsonify(resp)
 
     except Exception, e:
         return str(e)
+
+def parseTar(file): 
+    filename = secure_filename(file.filename)
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+    tar = tarfile.open(os.path.join(app.config['UPLOAD_FOLDER'], filename), "r:gz")
+    resp = []
+    for member in tar.getmembers():
+        f = tar.extractfile(member)
+        if f is not None:
+            content = f.read()
+            
+            message = Parser().parsestr(content)
+            messageId = message['message-id']
+            to = message['to']
+            sender = message['from']
+            subject = message['subject']
+            date = message['date']
+
+            message_dictionary = {
+                "msg-id": messageId,
+                "to": to,
+                "sender": sender,
+                "subject": subject,
+                "date": date
+            }
+            
+            resp.append(message_dictionary)
+    return resp
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')

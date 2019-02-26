@@ -7,14 +7,17 @@ export default class Body extends Component {
         super(props);
     
         this.state = {
+            isLoading: false,
             responseResults: ''
         };
 
         this.setResponseState = this.setResponseState.bind(this);
     }
 
-    setResponseState(data) {
+    setResponseState(isLoading, data) {
+        console.log("Setting Response State - isLoading=" + isLoading);
         this.setState({
+            isLoading: isLoading,
             responseResults: data
         });
     }
@@ -29,7 +32,7 @@ export default class Body extends Component {
                 </div>
                 <div className='row'>
                     <div className='col-sm-12'>
-                        <ParsedGrid results={this.state.responseResults}/>
+                        <ParsedGrid results={this.state.responseResults} isLoading={this.state.isLoading}/>
                     </div>
                 </div>
             </div>  

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+const supportedFileTypes = ".tar.gz, .msg";
+
 export default class FileUpload extends Component {
   constructor(props) {
     super(props);
@@ -11,22 +13,26 @@ export default class FileUpload extends Component {
     this.handleUpload = this.handleUpload.bind(this);
   }
 
-  handleUpload(e) {
+  handleUpload = e => {
+    var isLoading = true // Indicates to the parent that the fetch results haven't been recieved yet.
+    this.props.setResponseState(isLoading, '');
     e.preventDefault();
 
     const upload = new FormData();
     upload.append('file', this.uploadInput.files[0]);
     upload.append('filename', this.state.fileName);
 
-
+    console.log("Starting fetch...");
     fetch('http://localhost:5000/api/upload', {
         method: 'POST',
         body: upload
         })
         .then(response => response.json())
         .then((data) => {
+            console.log("Fetch complete");  
             this.setState({ parseResults: data })
-            this.props.setResponseState(data);
+            isLoading = false;
+            this.props.setResponseState(isLoading, data);
     });
   }
 
@@ -43,7 +49,13 @@ export default class FileUpload extends Component {
                 <div className="input-group">
                     <label className="input-group-btn">
                         <span className="btn btn-primary">
-                        Browse… <input ref={(ref) => { this.uploadInput = ref; }} type="file" style={{display: 'none'}} onChange={ (event) => this.onChange(event) }/>
+                        Browse… <input 
+                                    type="file" 
+                                    accept={supportedFileTypes}
+                                    ref={(ref) => { this.uploadInput = ref; }}
+                                    style={{display: 'none'}}
+                                    onChange={ (event) => this.onChange(event) }
+                                />
                         </span>
                     </label>
                     <input value={this.state.fileName} type="text" className="form-control" readOnly />
