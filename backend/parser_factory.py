@@ -13,11 +13,13 @@ class FileParser(object):
     factory = staticmethod(factory)
 
 class TarParser(FileParser):
-    def parse(self, file, upload_folder): 
+    def upload(self, file, upload_folder):
         filename = secure_filename(file.filename)
         file.save(os.path.join(upload_folder, filename))
+        return os.path.join(upload_folder, filename)
 
-        tar = tarfile.open(os.path.join(upload_folder, filename), "r:gz")
+    def extract(self, file_path):
+        tar = tarfile.open(file_path, "r:gz")
         resp = []
         for member in tar.getmembers():
             f = tar.extractfile(member)
@@ -42,32 +44,45 @@ class TarParser(FileParser):
                 resp.append(message_dictionary)
         return resp
 
-class MsgParser(Parser):
     def parse(self, file, upload_folder): 
+        file_path = self.upload(file, upload_folder)
+        results = self.extract(file_path)
+        return results
+        
+
+class MsgParser(Parser):
+    def upload(self, file, upload_folder):
         filename = secure_filename(file.filename)
         file.save(os.path.join(upload_folder, filename))
-        f = open(os.path.join(upload_folder, filename), "r") 
+        return os.path.join(upload_folder, filename)
+        
+    def extract(self, file_path):     
+        f = open(file_path, "r") 
         resp = []
-        if file is not None:
-            file = open
-            content = f.read()
-            
-            message = Parser().parsestr(content)
-            messageId = message['message-id']
-            to = message['to']
-            sender = message['from']
-            subject = message['subject']
-            date = message['date']
+        content = f.read()
+        
+        message = Parser().parsestr(content)
+        messageId = message['message-id']
+        to = message['to']
+        sender = message['from']
+        subject = message['subject']
+        date = message['date']
 
-            message_dictionary = {
-                "msg-id": messageId,
-                "to": to,
-                "sender": sender,
-                "subject": subject,
-                "date": date
-            }
+        message_dictionary = {
+            "msg-id": messageId,
+            "to": to,
+            "sender": sender,
+            "subject": subject,
+            "date": date
+        }
             
-            resp.append(message_dictionary)
+        resp.append(message_dictionary)
         f.close()
         
         return resp
+    
+    def parse(self, file, upload_folder): 
+        file_path = self.upload(file, upload_folder)
+        results = self.extract(file_path)
+        return results
+        
