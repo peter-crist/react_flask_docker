@@ -11,10 +11,10 @@ export default class Body extends Component {
             responseResults: ''
         };
 
-        this.setResponseState = this.setResponseState.bind(this);
+        this.setResponseResults = this.setResponseResults.bind(this);
     }
 
-    setResponseState(isLoading, data) {
+    setResponseResults(isLoading, data) {
         this.setState({
             isLoading: isLoading,
             responseResults: data
@@ -26,7 +26,7 @@ export default class Body extends Component {
             <div className='container'>
                 <div className='row'>
                     <div className='col-sm-12'>
-                        <FileUpload setResponseState={this.setResponseState} />
+                        <FileUpload setResponseResults={this.setResponseResults} />
                     </div>
                 </div>
                 <div className='row'>

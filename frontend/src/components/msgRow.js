@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+//TODO: Consider very large fields. For example, if the Subject is extremely long, the UI should address this.
+//      Potentially cutoff field with elipsis (...) and make clickable to "zoom".
 export default class MsgRow extends Component {
     constructor(props) {
         super(props);

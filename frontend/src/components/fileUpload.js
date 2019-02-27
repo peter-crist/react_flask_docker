@@ -15,7 +15,7 @@ export default class FileUpload extends Component {
 
   handleUpload = e => {
     var isLoading = true // Indicates to the parent that the fetch results haven't been recieved yet in order to display loading indicator.
-    this.props.setResponseState(isLoading, '');
+    this.props.setResponseResults(isLoading, '');
     e.preventDefault();
 
     const upload = new FormData();
@@ -30,7 +30,7 @@ export default class FileUpload extends Component {
         .then((data) => {
             this.setState({ parseResults: data })
             isLoading = false;
-            this.props.setResponseState(isLoading, data);
+            this.props.setResponseResults(isLoading, data);
     });
   }
 

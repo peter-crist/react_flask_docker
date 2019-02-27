@@ -20,11 +20,11 @@ class TarParser(FileParser):
 
     def extract(self, file_path):
         tar = tarfile.open(file_path, "r:gz")
-        resp = []
+        result = []
         for member in tar.getmembers():
-            f = tar.extractfile(member)
-            if f is not None:
-                content = f.read()
+            file = tar.extractfile(member)
+            if file is not None:
+                content = file.read()
                 
                 message = Parser().parsestr(content)
                 messageId = message['message-id']
@@ -41,15 +41,14 @@ class TarParser(FileParser):
                     "date": date
                 }
                 
-                resp.append(message_dictionary)
-        return resp
+                result.append(message_dictionary)
+        return result
 
     def parse(self, file, upload_folder): 
         file_path = self.upload(file, upload_folder)
         results = self.extract(file_path)
         return results
         
-
 class MsgParser(Parser):
     def upload(self, file, upload_folder):
         filename = secure_filename(file.filename)
@@ -57,9 +56,9 @@ class MsgParser(Parser):
         return os.path.join(upload_folder, filename)
         
     def extract(self, file_path):     
-        f = open(file_path, "r") 
-        resp = []
-        content = f.read()
+        file = open(file_path, "r") 
+        result = []
+        content = file.read()
         
         message = Parser().parsestr(content)
         messageId = message['message-id']
@@ -76,10 +75,10 @@ class MsgParser(Parser):
             "date": date
         }
             
-        resp.append(message_dictionary)
-        f.close()
+        result.append(message_dictionary)
+        file.close()
         
-        return resp
+        return result
     
     def parse(self, file, upload_folder): 
         file_path = self.upload(file, upload_folder)
