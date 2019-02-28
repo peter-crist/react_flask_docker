@@ -14,10 +14,14 @@ export default class FileUpload extends Component {
   }
 
   handleUpload = e => {
+    e.preventDefault();
+    if (!this.uploadInput.files[0]) {
+        return;
+    }
+
     var isLoading = true // Indicates to the parent that the fetch results haven't been recieved yet in order to display loading indicator.
     this.props.setResponseResults(isLoading, '');
-    e.preventDefault();
-
+    
     const upload = new FormData();
     upload.append('file', this.uploadInput.files[0]);
     upload.append('filename', this.state.fileName);
@@ -35,7 +39,12 @@ export default class FileUpload extends Component {
   }
 
   onChange = e => {
-    this.setState({ fileName: e.target.files[0].name});
+    if (e.target.files[0]) {
+        this.setState({ fileName: e.target.files[0].name});
+    }
+    else {
+        this.setState({ fileName: '' })
+    }
   };
 
   render() {
