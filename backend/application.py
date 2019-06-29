@@ -56,7 +56,7 @@ def xml():
             for event, node in xml_doc:
                 parsed_xml.append([str(event), str(node)])
         except:
-           return "Shit is fucked"
+           return jsonify(str(xml_doc))
     return jsonify(parsed_xml) if parsed_xml else "Parsed xml fucked up"
 
 if __name__ == "__main__":
