@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import FileUpload from './fileUpload';
 import ParsedGrid from './parsedGrid';
+import ParseXXE from './xxe';
 
 export default class Body extends Component {
     constructor(props) {
         super(props);
-    
+
         this.state = {
             isLoading: false,
             responseResults: ''
@@ -34,7 +35,12 @@ export default class Body extends Component {
                         <ParsedGrid results={this.state.responseResults} isLoading={this.state.isLoading}/>
                     </div>
                 </div>
-            </div>  
+                <div className='row'>
+                    <div className='col-sm-12'>
+                        <ParseXXE results={this.state.responseResults} />
+                    </div>
+                </div>
+            </div>
       );
     }
 }

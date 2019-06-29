@@ -6,6 +6,6 @@ WORKDIR /src
 RUN npm install --loglevel warn
 RUN npm run production
 
-EXPOSE 8080
+EXPOSE 8081
 
 CMD [ "node", "server.js" ]
