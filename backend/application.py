@@ -54,10 +54,11 @@ def xml():
 
         try:
             for event, node in xml_doc:
-                parsed_xml.append([str(event), str(node)])
+                if event == 'CHARACTERS':
+                    parsed_xml.append(node.data)
         except:
-           return jsonify(str(xml_doc))
-    return jsonify(parsed_xml) if parsed_xml else "Parsed xml fucked up"
+           return "This failed"
+    return jsonify(parsed_xml)
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')

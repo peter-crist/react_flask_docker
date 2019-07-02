@@ -49,7 +49,7 @@ export default class ParseXXE extends Component {
     <div>
         <form onSubmit={this.handleXMLUpload}>
             <div className="col-12">
-                <h4>Parse XML! (Please don't include XXE k thanks)</h4>
+                <h4>Upload a parrot.xml if you want to party! (Please don't include XXE k thanks)</h4>
                 <div className="input-group">
                     <label className="input-group-btn">
                         <span className="btn btn-primary">

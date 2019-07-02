@@ -5,7 +5,7 @@ export default class Jumbotron extends Component {
       return (
         <div className="container">
             <div className="jumbotron">
-                <h1>Return Path Coding Challenge</h1>               
+                <h1>XXE Exploit</h1>
             </div>
         </div>
       );

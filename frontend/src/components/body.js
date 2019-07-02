@@ -1,23 +1,20 @@
 import React, { Component } from 'react';
-import FileUpload from './fileUpload';
-import ParsedGrid from './parsedGrid';
 import ParseXXE from './xxe';
+import ParsedXXEGrid from './parsedXXEGrid';
 
 export default class Body extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            isLoading: false,
             responseResults: ''
         };
 
         this.setResponseResults = this.setResponseResults.bind(this);
     }
 
-    setResponseResults(isLoading, data) {
+    setResponseResults(data) {
         this.setState({
-            isLoading: isLoading,
             responseResults: data
         });
     }
@@ -27,17 +24,12 @@ export default class Body extends Component {
             <div className='container'>
                 <div className='row'>
                     <div className='col-sm-12'>
-                        <FileUpload setResponseResults={this.setResponseResults} />
+                        <ParseXXE setResponseResults={this.setResponseResults} />
                     </div>
                 </div>
                 <div className='row'>
                     <div className='col-sm-12'>
-                        <ParsedGrid results={this.state.responseResults} isLoading={this.state.isLoading}/>
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='col-sm-12'>
-                        <ParseXXE results={this.state.responseResults} />
+                        <ParsedXXEGrid results={this.state.responseResults} />
                     </div>
                 </div>
             </div>
